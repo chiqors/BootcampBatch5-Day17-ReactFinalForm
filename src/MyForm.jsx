@@ -13,7 +13,6 @@ const MyForm = () => {
     if (!values.lastName) {
       errors.lastName = 'Required';
     }
-    return errors;
   }; 
   
   const initialValues = {
@@ -21,19 +20,35 @@ const MyForm = () => {
     lastName: 'Doe',
   }
 
+  const required = value => (value ? undefined : 'Required')
+
   return (
     <Form onSubmit={onSubmit} initialValues={initialValues} validate={validate}>
       {({ handleSubmit, values }) => (
         <>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="firstName">First Name</label>
-            <Field name="firstName" component="input" type="text" />
-          </div>
-          <div>
-            <label htmlFor="lastName">Last Name</label>
-            <Field name="lastName" component="input" type="text" />
-          </div>
+          <Field name="firstName" validate={required}>
+            {({ input, meta }) => (
+              <div>
+                <label>First Name</label>
+                <input {...input} type="text" placeholder="First Name" />
+                {meta.error && meta.touched && <span style={
+                  {color: 'red'}
+                }>{meta.error}</span>}
+              </div>
+            )}
+          </Field>
+          <Field name="lastName" validate={required}>
+            {({ input, meta }) => (
+              <div>
+                <label>Last Name</label>
+                <input {...input} type="text" placeholder="Last Name" />
+                {meta.error && meta.touched && <span style={
+                  {color: 'red'}
+                }>{meta.error}</span>}
+              </div>
+            )}
+          </Field>
           <div>
             <label htmlFor="employed">Employed</label>
             <Field name="employed" component="input" type="checkbox" />
